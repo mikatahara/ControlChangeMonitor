@@ -137,8 +137,14 @@ alink="#ff0000" style="margin-right:28px;margin-left:28px;margin-top:10px;">
 			}
 		}
 		mData[0][0]=mVal[mCtrl[0]];
+		mData[1][0]=mVal[mCtrl[1]];
+		mData[2][0]=mVal[mCtrl[2]];
+		mData[3][0]=mVal[mCtrl[3]];
 		fdg1.fClearWindowInside();
 		fdg1.fDrawLine(mData[0]);
+		fdg1.fDrawLine(mData[1]);
+		fdg1.fDrawLine(mData[2]);
+		fdg1.fDrawLine(mData[3]);
 	}, 20);
 
 	function rCtrl1Change( cnum, n )
