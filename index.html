@@ -54,7 +54,8 @@ alink="#ff0000" style="margin-right:28px;margin-left:28px;margin-top:10px;">
 <td width="190"><b>Cotrol Change Number:</b></td>
 <td>
 <form method="volume">
-<input type="number" name="ctrl1"  step="1.0" min="0" max="127" value="1" onchange="rCtrl1Change(this.value);"> 
+<input type="number" name="ctrl1"  step="1.0" min="0" max="127" value="1" onchange="rCtrl1Change(this.value,0);"> <br>
+<input type="number" name="ctrl1"  step="1.0" min="0" max="127" value="1" onchange="rCtrl1Change(this.value,1);"> 
 </form>
 </tr>
 </table>
@@ -121,7 +122,7 @@ alink="#ff0000" style="margin-right:28px;margin-left:28px;margin-top:10px;">
 		input.onmidimessage = handleMIDIMessageLocal;
 	}
 
-	var mCtrl=1;
+	var mCtrl[4]=[1,2,3,4];
 	var mVal=Array(CTRL7);
 	var mData=Array(4);
 	for(var i=0; i<4; i++) mData[i]=Array(DSIZE);
@@ -135,14 +136,14 @@ alink="#ff0000" style="margin-right:28px;margin-left:28px;margin-top:10px;">
 				mData[i][DSIZE-1-i]=mData[i][DSIZE-2-i];
 			}
 		}
-		mData[0][0]=mVal[mCtrl];
+		mData[0][0]=mVal[mCtrl[0]];
 		fdg1.fClearWindowInside();
 		fdg1.fDrawLine(mData[0]);
 	}, 20);
 
-	function rCtrl1Change( cnum )
+	function rCtrl1Change( cnum, n )
 	{
-		mCtrl=cnum;
+		mCtrl[n]=cnum;
 		for(var i=0; i<DSIZE; i++){ mData[i]=0; }
 	}
 </script>
