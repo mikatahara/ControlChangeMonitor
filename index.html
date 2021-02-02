@@ -4,8 +4,10 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
 	<meta http-equiv="Content-Script-Type" content="text/javascript">
 	<meta name="Keywords" content="webMIDIAPI,WebMidiApi,webmidiapi">
-	<script type="text/javascript" src="https://mikatahara.github.io/drawgraph.js"></script>
-	<script type="text/javascript" src="https://mikatahara.github.io/mywebmidiapi.js"></script>
+	<script src="https://code.jquery.com/jquery-1.11.2.js"></script>
+	<script src="https://mikatahara.github.io/drawgraph.js"></script>
+	<script src="https://mikatahara.github.io/mywebmidiapi.js"></script>
+	<script src="ccmonitor.js"></script>
 	<title>CTRL MON</title>
 
 <style>
@@ -37,7 +39,7 @@
 <body bgcolor="#222222" text="#dddddd" link="#0000ff" vlink="#ff00ff" 
 alink="#ff0000" style="margin-right:28px;margin-left:28px;margin-top:10px;">
 <br>
-<center><h2>CONTROL CHANGE MONITOR<h2></center>
+<center><h2>CONTROL CHANGE MONITOR</h2>with PitchBend</center><br>
 <!--	-------------------------------------------------------------------- -->
 <div id="sans">
 <table border="0">
@@ -54,10 +56,10 @@ alink="#ff0000" style="margin-right:28px;margin-left:28px;margin-top:10px;">
 <td width="190"><b>Cotrol Change Number:</b></td>
 <td>
 <form method="volume">
-<input type="number" name="ctrl1"  step="1.0" min="0" max="127" value="1" onchange="rCtrl1Change(this.value,0);"> 
-<input type="number" name="ctrl1"  step="1.0" min="0" max="127" value="1" onchange="rCtrl1Change(this.value,1);"> <br>
-<input type="number" name="ctrl1"  step="1.0" min="0" max="127" value="1" onchange="rCtrl1Change(this.value,2);"> 
-<input type="number" name="ctrl1"  step="1.0" min="0" max="127" value="1" onchange="rCtrl1Change(this.value,3);">
+<input type="number" id="ctrl1" step="1.0" min="0" max="127" value="1">
+<input type="number" id="ctrl2" step="1.0" min="0" max="127" value="7">
+<input type="number" id="ctrl3" step="1.0" min="0" max="127" value="11">
+<input type="number" id="ctrl4" step="1.0" min="0" max="127" value="64">
 </form>
 </tr>
 </table>
@@ -78,90 +80,9 @@ alink="#ff0000" style="margin-right:28px;margin-left:28px;margin-top:10px;">
 <div id="log">
 </div>
 
-<!--	-------------------------------------------------------------------- -->
-<script>
-
-	window.onload = function()
-	{
-		runTest();
-		setInputMenuID(document.input_device_select.ids);
-		setOutputMenuID(document.output_device_select.ids);
-
-		var hoge = setInterval(function() {
-		    //終了条件
-			if (input != null) {
-			input.onmidimessage = handleMIDIMessageLocal;
-			clearInterval(hoge);
-			}
-		}, 200);
-
-	};
-
-	const DSIZE=1024;
-	const CTRL7=128;
-
-	/* 描画領域の初期化 */
-	var fdg1 = new DrawGraph(0,1024,0,256);
-	fdg1.fSetCanvas(document.getElementById('ctrlshape'));
-	fdg1.fResize();
-	fdg1.fFillColor("#ccccff");
-	fdg1.fLine(0,0,fdg1.cv.width,fdg1.cv.height);
-	fdg1.fLine(fdg1.cv.width,0,0,fdg1.cv.height);
-	fdg1.fSetWindowXY(0,fdg1.cv.width,0,fdg1.cv.height);
-	fdg1.fSetViewPort(0,DSIZE,0,CTRL7);
-	fdg1.fStrokeRect();
-
-	function handleMIDIMessageLocal( event )
-	{
-		if(event.data[0]==0xB0){
-			mVal[event.data[1]]=event.data[2];
-		}
-	}
-
-	function inputDeviceSelectLocal( item )
-	{
-		inputDeviceSelect( item );
-		input.onmidimessage = handleMIDIMessageLocal;
-	}
-
-	var mCtrl= [1,2,3,4];
-	var mVal=Array(CTRL7);
-	var mData=[null,null,null,null];
-	for(var i=0; i<4; i++) mData[i]=Array(DSIZE);
-
-	for(var i=0; i<4; i++){ for(j=0; j<DSIZE; j++) mData[i][j]=0; }
-	for(var i=0; i<CTRL7; i++){ mVal[i]=0; }
-
-	var hoge = setInterval(function() {
-		for(var i=0; i<4; i++){
-			for(var j=0; j<DSIZE-1; j++){
-				mData[i][DSIZE-1-j]=mData[i][DSIZE-2-j];
-			}
-		}
-		mData[0][0]=mVal[mCtrl[0]];
-		mData[1][0]=mVal[mCtrl[1]];
-		mData[2][0]=mVal[mCtrl[2]];
-		mData[3][0]=mVal[mCtrl[3]];
-		fdg1.fClearWindowInside();
-		fdg1.fFillColor("#FFFF88");
-		fdg1.fDrawLine(mData[0]);
-		fdg1.fFillColor("#00FF00");
-		fdg1.fDrawLine(mData[1]);
-		fdg1.fFillColor("#FF0088");
-		fdg1.fDrawLine(mData[2]);
-		fdg1.fFillColor("#8800FF");
-		fdg1.fDrawLine(mData[3]);
-	}, 20);
-
-	function rCtrl1Change( cnum, n )
-	{
-		mCtrl[n]=cnum;
-		for(var j=0; j<DSIZE; j++){ mData[n][j]=0; }
-	}
-</script>
-
 </BODY>
 <!-- ---------------------------------------------------------------------	-->
+<!--
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -172,5 +93,6 @@ alink="#ff0000" style="margin-right:28px;margin-left:28px;margin-top:10px;">
   ga('send', 'pageview');
 
 </script>
+-->
 <!-- ---------------------------------------------------------------------	-->
 </HTML>
