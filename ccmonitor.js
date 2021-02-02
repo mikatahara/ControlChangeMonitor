@@ -8,7 +8,7 @@ var mCtrl= [1,2,3,4];
 var mVal=Array(CTRL7);
 var mBend;
 var mData=[null,null,null,null,null];
-var hoge=null;
+var vhoge=null;
 
 window.onload = function()
 {
@@ -35,6 +35,16 @@ window.onload = function()
 	$('#ctrl3').change(function() { var val = $(this).val(); rCtrl1Change(val,2); });
 	$('#ctrl4').change(function() { var val = $(this).val(); rCtrl1Change(val,3); });
 
+	$('#bstop').click(function() {
+        
+        if($(this).val()=="START"){
+            $(this).val("STOP");
+			start_graph();
+    }else{
+            $(this).val("START");
+			clearInterval(vhoge);
+        }
+    });
 
 	display_init();
 
@@ -74,7 +84,7 @@ function inputDeviceSelectLocal( item )
 
 function start_graph()
 {
-	hoge = setInterval(function() {
+	vhoge = setInterval(function() {
 		for(var i=0; i<mVnum; i++){
 			for(var j=0; j<DSIZE-1; j++){
 				mData[i][DSIZE-1-j]=mData[i][DSIZE-2-j];

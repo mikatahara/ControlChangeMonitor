@@ -43,16 +43,19 @@ alink="#ff0000" style="margin-right:28px;margin-left:28px;margin-top:10px;">
 <!--	-------------------------------------------------------------------- -->
 <div id="sans">
 <table border="0">
-<tr><td width="100"></td>
+<tr>
+    <td width="60"></td>
+    
 <td width="100"><b>Input Port:</b></td>
-<td>
-<form name="input_device_select">
+
+    <td>
+    <form name="input_device_select">
 <select name="ids" onChange="inputDeviceSelectLocal(this);">
 <option value="0">No Device
 </select>
 </form>
 </td>
-<td width="20"></td>
+    <td width="20"></td>
 <td width="190"><b>Cotrol Change Number:</b></td>
 <td>
 <form method="volume">
@@ -61,6 +64,11 @@ alink="#ff0000" style="margin-right:28px;margin-left:28px;margin-top:10px;">
 <input type="number" id="ctrl3" step="1.0" min="0" max="127" value="11">
 <input type="number" id="ctrl4" step="1.0" min="0" max="127" value="64">
 </form>
+</td>
+
+    <td width="20"></td>
+    <td><input type="button" id="bstop" value="STOP"> </td>
+    
 </tr>
 </table>
 <br>
@@ -79,8 +87,7 @@ alink="#ff0000" style="margin-right:28px;margin-left:28px;margin-top:10px;">
 <br>
 <div id="log">
 </div>
-
-</BODY>
+    </body>
 <!-- ---------------------------------------------------------------------	-->
 <!--
 <script>
